@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Color Guessing Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f2f2f2;
+      padding: 50px;
+    }
+
+    .game-box {
+      background-color: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      max-width: 400px;
+      margin: auto;
+    }
+
+    .color-btn {
+      width: 100px;
+      height: 40px;
+      margin: 10px;
+      border: none;
+      color: white;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .color-btn:hover {
+      transform: scale(1.05);
+    }
+
+    #result {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    #resetBtn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #333;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="game-box">
+    <h2>🎨 Color Guessing Game</h2>
+    <p>Pick the button that matches: <strong id="targetColor">Red</strong></p>
+
+    <div>
+      <button class="color-btn" id="btn1"></button>
+      <button class="color-btn" id="btn2"></button>
+      <button class="color-btn" id="btn3"></button>
+    </div>
+
+    <p id="result"></p>
+    <button id="resetBtn">🔄 Play Again</button>
+  </div>
+
+  <script>
+    const colors = ["red", "blue", "green", "orange", "purple", "yellow"];
+    const targetColor = document.getElementById("targetColor");
+    const result = document.getElementById("result");
+    const buttons = [
+      document.getElementById("btn1"),
+      document.getElementById("btn2"),
+      document.getElementById("btn3")
+    ];
+
+    function randomColor() {
+      return colors[Math.floor(Math.random() * colors.length)];
+    }
+
+    function setGame() {
+      result.textContent = "";
+      document.body.style.backgroundColor = "#f2f2f2";
+
+      const correctColor = randomColor();
+      targetColor.textContent = correctColor.charAt(0).toUpperCase() + correctColor.slice(1);
+
+      const options = [correctColor];
+      while (options.length < 3) {
+        const newColor = randomColor();
+        if (!options.includes(newColor)) {
+          options.push(newColor);
+        }
+      }
+      options.sort(() => 0.5 - Math.random());
+
+      buttons.forEach((btn, index) => {
+        btn.style.backgroundColor = options[index];
+        btn.onclick = () => {
+          if (options[index] === correctColor) {
+            result.textContent = "✅ Correct!";
+            document.body.style.backgroundColor = correctColor;
+          } else {
+            result.textContent = "❌ Try Again!";
+          }
+        };
+      });
+    }
+
+    document.getElementById("resetBtn").onclick = setGame;
+    setGame();
+  </script>
+</body>
+</html>
